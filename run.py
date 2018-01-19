@@ -50,7 +50,7 @@ def main():
         entries.append(
             {
                 "Id": str(i),
-                "MessageBody": message
+                "MessageBody": message.decode("utf-8")
             }
         )
     sqs_response = send_batch_entries_to_sqs(entries)
