@@ -49,8 +49,8 @@ def main():
     for i, message in enumerate(messages):
         entries.append(
             {
-                "messageID": str(i),
-                "messageBody": message
+                "Id": str(i),
+                "MessageBody": message
             }
         )
     sqs_response = send_batch_entries_to_sqs(entries)
@@ -60,7 +60,7 @@ def main():
         logging.info("Succesfully send batch to SQS.")
     logging.info("Removing send messages from redis")
     for success in sqs_response.get('Successful', []):
-        message_id = int(success['MessageId'])
+        message_id = int(success['Id'])
         message_sent = messages[message_id]
         redis_.lrem(REDIS_IN_PROGRESS_QUEUE_NAME, 0, message_sent)
 
