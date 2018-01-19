@@ -1,4 +1,4 @@
-import importlib
+import importlib.util
 import os
 
 SQS_ENDPOINT = 'http://tunnel:9324'

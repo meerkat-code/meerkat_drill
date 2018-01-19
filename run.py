@@ -12,6 +12,7 @@ REDIS_IN_PROGRESS_QUEUE_NAME = 'nest-in-progress-queue-' + config.country_config
 redis_ = redis.StrictRedis(host='redis', port=6379, db=0)
 
 def fetch_messages_from_queue(count=MAX_BATCH_SIZE):
+    logging.info("Starting fetching messages from redis.")
     result = []
     start_time = time()
     elapsed_time = time() - start_time
@@ -20,6 +21,7 @@ def fetch_messages_from_queue(count=MAX_BATCH_SIZE):
         if message:
             result.append(message)
         elapsed_time = time() - start_time
+    logging.info(f"Fetched {len(result)} records in {int(elapsed_time)} second.")
     return result
 
 # 'Successful': [
@@ -43,6 +45,7 @@ def fetch_messages_from_queue(count=MAX_BATCH_SIZE):
 def main():
     messages = fetch_messages_from_queue(MAX_BATCH_SIZE)
     entries = []
+    logging.info("Got message batch. Processing...")
     for i, message in enumerate(messages):
         entries.append(
             {
@@ -53,6 +56,9 @@ def main():
     sqs_response = send_batch_entries_to_sqs(entries)
     if sqs_response.get('Failed'):
         logging.error("Failed so send some messages to sqs")
+    else:
+        logging.info("Succesfully send batch to SQS.")
+    logging.info("Removing send messages from redis")
     for success in sqs_response.get('Successful', []):
         message_id = int(success['MessageId'])
         message_sent = messages[message_id]
