@@ -1,4 +1,3 @@
-import logging
 from time import sleep, time
 
 import redis
@@ -23,24 +22,6 @@ def fetch_messages_from_queue(count=MAX_BATCH_SIZE):
         elapsed_time = time() - start_time
     logger.info(f"Fetched {len(result)} records in {int(elapsed_time)} second.")
     return result
-
-# 'Successful': [
-#             {
-#                 'Id': 'string',
-#                 'MessageId': 'string',
-#                 'MD5OfMessageBody': 'string',
-#                 'MD5OfMessageAttributes': 'string',
-#                 'SequenceNumber': 'string'
-#             },
-#         ],
-#         'Failed': [
-#             {
-#                 'Id': 'string',
-#                 'SenderFault': True|False,
-#                 'Code': 'string',
-#                 'Message': 'string'
-#             },
-#         ]
 
 def main():
     messages = fetch_messages_from_queue(MAX_BATCH_SIZE)

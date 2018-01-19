@@ -1,4 +1,4 @@
 import logging
 
-logger = logging.getLogger("meerkat_drill")
+logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
