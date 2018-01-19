@@ -19,7 +19,7 @@ def fetch_messages_from_queue(count=MAX_BATCH_SIZE):
     result = []
     start_time = time()
     elapsed_time = time() - start_time
-    while elapsed_time < BATCH_COLLECTION_TIMEOUT or len(result) < count:
+    while elapsed_time < BATCH_COLLECTION_TIMEOUT and len(result) < count:
         message = redis_.brpoplpush(REDIS_QUEUE_NAME, REDIS_IN_PROGRESS_QUEUE_NAME, 10)
         if message:
             result.append(message)
@@ -48,7 +48,7 @@ def fetch_messages_from_queue(count=MAX_BATCH_SIZE):
 def main():
     messages = fetch_messages_from_queue(MAX_BATCH_SIZE)
     entries = []
-    logger.info("Got message batch. Processing...")
+    logger.info(f"Got {len(messages)} message batch. Processing...")
     for i, message in enumerate(messages):
         entries.append(
             {
