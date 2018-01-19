@@ -3,16 +3,13 @@ from time import sleep, time
 
 import redis
 from meerkat_drill.message_service import send_batch_entries_to_sqs, notify_sns
-from meerkat_drill import config
+from meerkat_drill import config, logger
 
 MAX_BATCH_SIZE = 10
 BATCH_COLLECTION_TIMEOUT = 60
 REDIS_QUEUE_NAME = 'nest-queue-' + config.country_config['country_name'].lower()
 REDIS_IN_PROGRESS_QUEUE_NAME = 'nest-in-progress-queue-' + config.country_config['country_name'].lower()
 redis_ = redis.StrictRedis(host='redis', port=6379, db=0)
-
-logger = logging.getLogger('meerkat_drill')
-logger.setLevel(logging.INFO)
 
 def fetch_messages_from_queue(count=MAX_BATCH_SIZE):
     logger.info("Starting fetching messages from redis.")

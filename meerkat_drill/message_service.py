@@ -4,7 +4,7 @@ Data resource for interacting with Amazon Simple Queue Service
 import json
 
 import boto3
-import logging
+from meerkat_drill import logger
 
 from meerkat_drill import config
 
@@ -18,8 +18,6 @@ sts_client = boto3.client('sts', region_name=region_name)
 sns_client = boto3.client('sns', region_name=region_name)
 SQS_QUEUE_NAME = 'nest-queue-' + config.country_config['country_name'].lower()
 DEAD_LETTER_QUEUE_NAME = 'nest-dead-letter-queue-' + config.country_config['country_name'].lower()
-logger = logging.getLogger("meerkat_drill:message_service")
-logger.setLevel(logging.INFO)
 
 def get_account_id():
     """
