@@ -53,7 +53,11 @@ def main():
                 "MessageBody": message.decode("utf-8")
             }
         )
-    sqs_response = send_batch_entries_to_sqs(entries)
+    if entries:
+        sqs_response = send_batch_entries_to_sqs(entries)
+    else:
+        logger.info("Empty batch. No action neede.")
+        return
     if sqs_response.get('Failed'):
         logger.error("Failed so send some messages to sqs")
     else:
