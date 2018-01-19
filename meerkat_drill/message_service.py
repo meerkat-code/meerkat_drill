@@ -18,6 +18,8 @@ sts_client = boto3.client('sts', region_name=region_name)
 sns_client = boto3.client('sns', region_name=region_name)
 SQS_QUEUE_NAME = 'nest-queue-' + config.country_config['country_name'].lower()
 DEAD_LETTER_QUEUE_NAME = 'nest-dead-letter-queue-' + config.country_config['country_name'].lower()
+logger = logging.getLogger("meerkat_drill:message_service")
+logger.setLevel(logging.INFO)
 
 def get_account_id():
     """
@@ -69,7 +71,7 @@ def send_batch_entries_to_sqs(entries):
         QueueUrl=get_queue_url(SQS_QUEUE_NAME),
         Entries=entries
     )
-    logging.debug("SQS send message response " + str(response))
+    logger.debug("SQS send message response " + str(response))
     return response
 
 
@@ -116,7 +118,7 @@ def notify_sns():
         Message=json.dumps({'default': json.dumps(message)}),
         MessageStructure='json'
     )
-    logging.debug("SNS notification response " + str(response))
+    logger.debug("SNS notification response " + str(response))
 
 def create_sns_topic():
     """

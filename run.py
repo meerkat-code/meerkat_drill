@@ -2,7 +2,7 @@ import logging
 from time import sleep, time
 
 import redis
-from meerkat_drill.message_service import send_batch_entries_to_sqs, notify_sns, SQS_QUEUE_NAME, DEAD_LETTER_QUEUE_NAME
+from meerkat_drill.message_service import send_batch_entries_to_sqs, notify_sns
 from meerkat_drill import config
 
 MAX_BATCH_SIZE = 10
