@@ -1,3 +1,8 @@
-boto3==1.4.4
-raven==6.0.0
-redis
+boto3==1.5.18
+botocore==1.8.32
+docutils==0.14
+jmespath==0.9.3
+python-dateutil==2.6.1
+redis==2.10.6
+s3transfer==0.1.12
+six==1.11.0
