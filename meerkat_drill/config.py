@@ -2,7 +2,7 @@ import importlib.util
 import os
 
 SQS_ENDPOINT = 'http://tunnel:9324'
-LOCAL = True
+LOCAL = False
 
 # Country config
 config_directory = os.environ.get("COUNTRY_CONFIG_DIR",
