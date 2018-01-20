@@ -9,8 +9,8 @@ from meerkat_drill import config, logger
 
 MAX_BATCH_SIZE = 10
 BATCH_COLLECTION_TIMEOUT = 60
-REDIS_QUEUE_NAME = 'nest-queue-' + config.country_config['country_name'].lower()
-REDIS_IN_PROGRESS_QUEUE_NAME = 'nest-in-progress-queue-' + config.country_config['country_name'].lower()
+REDIS_QUEUE_NAME = 'nest-queue-' + config.country_queue_name
+REDIS_IN_PROGRESS_QUEUE_NAME = 'nest-in-progress-queue-' + config.country_queue_name
 redis_ = redis.StrictRedis(host='redis', port=6379, db=0)
 
 def fetch_messages_from_queue(count=MAX_BATCH_SIZE):
