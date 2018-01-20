@@ -56,15 +56,6 @@ def send_batch_entries_to_sqs(entries):
 }
     """
 
-    created = create_queue()
-    try:
-        assert created, "Queue could not be created"
-    except AssertionError as e:
-        message = e.args[0]
-        message += " Message queue creation failed."
-        e.args = (message,)
-        raise
-
     response = sqs_client.send_message_batch(
         QueueUrl=get_queue_url(SQS_QUEUE_NAME),
         Entries=entries
