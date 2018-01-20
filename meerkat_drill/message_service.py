@@ -106,6 +106,8 @@ def notify_sns():
 
     if config.sns_topic_arn is None:
         topic_arn = create_sns_topic()
+    else:
+        topic_arn = config.sns_topic_arn
     response = sns_client.publish(
         TopicArn=topic_arn,
         Message=json.dumps({'default': json.dumps(message)}),
