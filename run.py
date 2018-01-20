@@ -6,6 +6,7 @@ import redis
 from meerkat_drill.message_service import send_batch_entries_to_sqs, notify_sns, create_queue
 from meerkat_drill import config, logger
 
+
 MAX_BATCH_SIZE = 10
 BATCH_COLLECTION_TIMEOUT = 60
 REDIS_QUEUE_NAME = 'nest-queue-' + config.country_config['country_name'].lower()
@@ -66,9 +67,7 @@ if __name__ == '__main__':
         e.args = (message,)
         raise
 
-
     while True:
         main()
-        sleep(1)
 
 
