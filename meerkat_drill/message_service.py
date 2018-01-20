@@ -16,8 +16,8 @@ else:
     sqs_client = boto3.client('sqs', region_name=region_name)
 sts_client = boto3.client('sts', region_name=region_name)
 sns_client = boto3.client('sns', region_name=region_name)
-SQS_QUEUE_NAME = 'nest-queue-' + config.country_config['country_name'].lower()
-DEAD_LETTER_QUEUE_NAME = 'nest-dead-letter-queue-' + config.country_config['country_name'].lower()
+SQS_QUEUE_NAME = 'nest-queue-' + config.country_queue_name
+DEAD_LETTER_QUEUE_NAME = 'nest-dead-letter-queue-' + config.country_queue_name
 
 def get_account_id():
     """
@@ -87,6 +87,8 @@ def get_queue_url(queue_name):
     Returns:\n
         URL for the given queue\n
     """
+    if config.sqs_queue_url:
+        return config.sqs_queue_url
     response = sqs_client.get_queue_url(
         QueueName=queue_name,
         QueueOwnerAWSAccountId=get_account_id()
