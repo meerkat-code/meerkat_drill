@@ -14,7 +14,7 @@ REDIS_IN_PROGRESS_QUEUE_NAME = 'nest-in-progress-queue-' + config.country_config
 redis_ = redis.StrictRedis(host='redis', port=6379, db=0)
 
 def fetch_messages_from_queue(count=MAX_BATCH_SIZE):
-    logger.info("Starting fetching messages from redis.")
+    logger.info("Starting fetching messages from redis queue {}.".format(REDIS_QUEUE_NAME))
     result = []
     start_time = time()
     elapsed_time = time() - start_time
