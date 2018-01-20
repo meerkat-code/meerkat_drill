@@ -104,8 +104,10 @@ def notify_sns():
         "dead-letter-queue": DEAD_LETTER_QUEUE_NAME
     }
 
+    if config.sns_topic_arn is None:
+        topic_arn = create_sns_topic()
     response = sns_client.publish(
-        TopicArn=create_sns_topic(),
+        TopicArn=topic_arn,
         Message=json.dumps({'default': json.dumps(message)}),
         MessageStructure='json'
     )

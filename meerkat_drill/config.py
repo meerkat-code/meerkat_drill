@@ -11,6 +11,7 @@ country_config_file = os.environ.get("COUNTRY_CONFIG", "demo_config.py")
 country_queue_name = os.environ.get("COUNTRY_NAME", "demo").lower()
 
 sqs_queue_url = os.environ.get("SQS_QUEUE_URL", None)
+sns_topic_arn = os.environ.get("SNS_TOPIC_ARN", None)
 
 spec = importlib.util.spec_from_file_location(
     "country_config_module",
