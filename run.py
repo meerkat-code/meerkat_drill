@@ -1,11 +1,8 @@
-from time import sleep, time
-
-import logging
+from time import time
 
 import redis
-from meerkat_drill.message_service import send_batch_entries_to_sqs, notify_sns, create_queue
+from meerkat_drill.message_service import send_batch_entries_to_sqs, notify_sns, create_sqs_queue_if_needed
 from meerkat_drill import config, logger
-
 
 MAX_BATCH_SIZE = 10
 BATCH_COLLECTION_TIMEOUT = 60
@@ -26,7 +23,7 @@ def fetch_messages_from_queue(count=MAX_BATCH_SIZE):
     logger.info(f"Fetched {len(result)} records in {int(elapsed_time)} second.")
     return result
 
-def main():
+def process_queue():
     messages = fetch_messages_from_queue(MAX_BATCH_SIZE)
     entries = []
     logger.info(f"Got {len(messages)} message batch. Processing...")
@@ -55,19 +52,11 @@ def main():
     notify_sns()
 
 
-if __name__ == '__main__':
-    
-    # Making sure queue is created
-    created = create_queue()
-    try:
-        assert created, "Queue could not be created"
-    except AssertionError as e:
-        message = e.args[0]
-        message += " Message queue creation failed."
-        e.args = (message,)
-        raise
-
+def main():
+    create_sqs_queue_if_needed()
     while True:
-        main()
+        process_queue()
 
 
+if __name__ == '__main__':
+    main()

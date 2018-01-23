@@ -127,3 +127,15 @@ def create_sns_topic():
     )
 
     return topic['TopicArn']
+
+
+def create_sqs_queue_if_needed():
+    # Making sure queue is created
+    created = create_queue()
+    try:
+        assert created, "Queue could not be created"
+    except AssertionError as e:
+        message = e.args[0]
+        message += " Message queue creation failed."
+        e.args = (message,)
+        raise
