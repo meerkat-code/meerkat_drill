@@ -139,3 +139,6 @@ def create_sqs_queue_if_needed():
         message += " Message queue creation failed."
         e.args = (message,)
         raise
+
+
+MAX_BATCH_SIZE = 10
