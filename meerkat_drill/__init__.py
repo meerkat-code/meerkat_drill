@@ -1,9 +1,5 @@
 import logging
 
-from meerkat_drill.redis import fetch_messages_from_queue, redis_connection, REDIS_IN_PROGRESS_QUEUE_NAME, \
-    remove_message_from_in_process_queue
-from meerkat_drill.sqs import MAX_BATCH_SIZE, send_batch_entries_to_sqs, notify_sns
-
 console = logging.StreamHandler()
 
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
@@ -13,6 +9,10 @@ logger = logging.getLogger(__name__)
 logger.addHandler(console)
 
 logger.setLevel(logging.INFO)
+
+from meerkat_drill.redis import fetch_messages_from_queue, redis_connection, REDIS_IN_PROGRESS_QUEUE_NAME, \
+    remove_message_from_in_process_queue
+from meerkat_drill.sqs import MAX_BATCH_SIZE, send_batch_entries_to_sqs, notify_sns
 
 
 def process_queue():
@@ -29,10 +29,10 @@ def process_queue():
     if entries:
         sqs_response = send_batch_entries_to_sqs(entries)
     else:
-        logger.info("Empty batch. No action neede.")
+        logger.info("Empty batch. No action needed.")
         return
     if sqs_response.get('Failed'):
-        logger.error("Failed so send some messages to sqs")
+        logger.error("Failed to send some messages to sqs")
     else:
         on_success(messages, sqs_response)
     notify_sns()
