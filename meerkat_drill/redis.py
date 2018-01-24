@@ -32,3 +32,11 @@ def __get_message():
 
 def remove_message_from_in_process_queue(message_sent):
     redis_connection.lrem(REDIS_IN_PROGRESS_QUEUE_NAME, 0, message_sent)
+
+
+def resend_any_stale_in_progress_messages():
+    messages = redis_connection.lrange(REDIS_IN_PROGRESS_QUEUE_NAME, 0, -1)
+    if messages:
+        logger.warning(f"Found {len(messages)} in in progress queue.")
+        for message in messages:
+            redis_connection.lpush(message)
