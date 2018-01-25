@@ -11,8 +11,12 @@ logger.addHandler(console)
 logger.setLevel(logging.INFO)
 
 from meerkat_drill.redis import fetch_messages_from_queue, redis_connection, REDIS_IN_PROGRESS_QUEUE_NAME, \
-    remove_message_from_in_process_queue
+    remove_message_from_in_process_queue, resend_any_stale_in_progress_messages
 from meerkat_drill.sqs import MAX_BATCH_SIZE, send_batch_entries_to_sqs, notify_sns
+
+
+def init():
+    resend_any_stale_in_progress_messages()
 
 
 def process_queue():
