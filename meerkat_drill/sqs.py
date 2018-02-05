@@ -8,16 +8,17 @@ from meerkat_drill import logger
 
 from meerkat_drill import config
 
-region_name = 'eu-west-1'
-if hasattr(config, "LOCAL") and config.LOCAL:
-    sqs_client = boto3.client('sqs', region_name=region_name,
-                              endpoint_url=config.SQS_ENDPOINT)
-else:
-    sqs_client = boto3.client('sqs', region_name=region_name)
-sts_client = boto3.client('sts', region_name=region_name)
-sns_client = boto3.client('sns', region_name=region_name)
+AWS_REGION_NAME = 'eu-west-1'
 SQS_QUEUE_NAME = 'nest-queue-' + config.country_queue_name
 DEAD_LETTER_QUEUE_NAME = 'nest-dead-letter-queue-' + config.country_queue_name
+
+if hasattr(config, "LOCAL") and config.LOCAL:
+    sqs_client = boto3.client('sqs', region_name=AWS_REGION_NAME,
+                              endpoint_url=config.SQS_ENDPOINT)
+else:
+    sqs_client = boto3.client('sqs', region_name=AWS_REGION_NAME)
+sts_client = boto3.client('sts', region_name=AWS_REGION_NAME)
+sns_client = boto3.client('sns', region_name=AWS_REGION_NAME)
 
 def get_account_id():
     """
@@ -127,3 +128,18 @@ def create_sns_topic():
     )
 
     return topic['TopicArn']
+
+
+def create_sqs_queue_if_needed():
+    # Making sure queue is created
+    created = create_queue()
+    try:
+        assert created, "Queue could not be created"
+    except AssertionError as e:
+        message = e.args[0]
+        message += " Message queue creation failed."
+        e.args = (message,)
+        raise
+
+
+MAX_BATCH_SIZE = 10
