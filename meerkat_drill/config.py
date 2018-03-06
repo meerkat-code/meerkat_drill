@@ -5,7 +5,7 @@ SQS_ENDPOINT = 'http://tunnel:9324'
 LOCAL = bool(os.environ.get("LOCAL", False))
 
 rabbit_url = os.environ.get("RABBIT_URL", "amqp://guest:guest@rabbit:5672/%2F")
-external_message_queue = os.environ.get("EXTERNAL_MESSAGE_QUEUE", "sqs")
+external_message_queue = os.environ.get("EXTERNAL_MESSAGE_QUEUE", "SQS")
 # Country config
 config_directory = os.environ.get("COUNTRY_CONFIG_DIR",
                                   os.path.dirname(os.path.realpath(__file__)) + "/country_config/")
