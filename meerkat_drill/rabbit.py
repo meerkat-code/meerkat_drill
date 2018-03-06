@@ -26,4 +26,5 @@ def send_batch_entries_to_rabbit(entries):
             response["Failed"].append({"Id": entry["Id"]})
 
     connection.close()
+    logger.debug("Rabbit send message response " + str(response))
     return response

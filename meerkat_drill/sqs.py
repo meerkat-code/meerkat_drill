@@ -132,7 +132,7 @@ def create_sns_topic():
 
 def create_sqs_queue_if_needed():
     # Making sure queue is created'
-    logger.info("CREATE QUEUE")
+    logger.debug("Creating SQS queue.")
     created = create_queue()
     try:
         assert created, "Queue could not be created"
