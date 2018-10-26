@@ -6,8 +6,8 @@ from meerkat_drill import config, logger
 
 BATCH_COLLECTION_TIMEOUT = 60
 TIMEOUT = 10
-REDIS_QUEUE_NAME = 'nest-queue-' + config.country_queue_name
-REDIS_IN_PROGRESS_QUEUE_NAME = 'nest-in-progress-queue-' + config.country_queue_name
+REDIS_QUEUE_NAME = 'nest-queue-' + config.COUNTRY_QUEUE_NAME
+REDIS_IN_PROGRESS_QUEUE_NAME = 'nest-in-progress-queue-' + config.COUNTRY_QUEUE_NAME
 
 redis_connection = redis.StrictRedis(host='redis', port=6379, db=0)
 

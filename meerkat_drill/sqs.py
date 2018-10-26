@@ -9,8 +9,8 @@ from meerkat_drill import logger
 from meerkat_drill import config
 
 AWS_REGION_NAME = 'eu-west-1'
-SQS_QUEUE_NAME = 'nest-queue-' + config.country_queue_name
-DEAD_LETTER_QUEUE_NAME = 'nest-dead-letter-queue-' + config.country_queue_name
+SQS_QUEUE_NAME = 'nest-queue-' + config.COUNTRY_QUEUE_NAME
+DEAD_LETTER_QUEUE_NAME = 'nest-dead-letter-queue-' + config.COUNTRY_QUEUE_NAME
 
 if hasattr(config, "LOCAL") and config.LOCAL:
     sqs_client = boto3.client('sqs', region_name=AWS_REGION_NAME,
@@ -88,8 +88,8 @@ def get_queue_url(queue_name):
     Returns:\n
         URL for the given queue\n
     """
-    if config.sqs_queue_url:
-        return config.sqs_queue_url
+    if config.SQS_QUEUE_URL:
+        return config.SQS_QUEUE_URL
     response = sqs_client.get_queue_url(
         QueueName=queue_name,
         QueueOwnerAWSAccountId=get_account_id()
@@ -105,10 +105,10 @@ def notify_sns():
         "dead-letter-queue": DEAD_LETTER_QUEUE_NAME
     }
 
-    if config.sns_topic_arn is None:
+    if config.SNS_TOPIC_ARN is None:
         topic_arn = create_sns_topic()
     else:
-        topic_arn = config.sns_topic_arn
+        topic_arn = config.SNS_TOPIC_ARN
     response = sns_client.publish(
         TopicArn=topic_arn,
         Message=json.dumps({'default': json.dumps(message)}),
@@ -124,7 +124,7 @@ def create_sns_topic():
         Topic ARN
     """
     topic = sns_client.create_topic(
-        Name='nest-incoming-topic-' + config.country_config['country_name'].lower()
+        Name='nest-incoming-topic-' + config.COUNTRY_QUEUE_NAME
     )
 
     return topic['TopicArn']
