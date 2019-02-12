@@ -1,4 +1,5 @@
 import logging
+import os
 
 console = logging.StreamHandler()
 
@@ -8,7 +9,9 @@ console.setFormatter(formatter)
 logger = logging.getLogger(__name__)
 logger.addHandler(console)
 
-logger.setLevel(logging.INFO)
+LOG_LEVEL_NAME = os.environ.get('LOG_LEVEL_NAME', 'ERROR')
+log_level = logging.getLevelName(LOG_LEVEL_NAME)
+logger.setLevel(log_level)
 
 from meerkat_drill.redis import fetch_messages_from_queue, redis_connection, REDIS_IN_PROGRESS_QUEUE_NAME, \
     remove_message_from_in_process_queue, resend_any_stale_in_progress_messages
